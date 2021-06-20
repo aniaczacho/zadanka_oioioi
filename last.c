@@ -1,36 +1,40 @@
 #include <stdio.h>
 
-int sum(long long n) {
+long long sum(long long n) {
     long long sum = 0;
-    while (n > 0) {
+    while (n != 0) {
         sum += n;
-        n -= n%10;
         n /= 10;
     }
     return sum;
 }
 
+void bin_search(long long a, long long b, long long n) {
+    if (b < a) {
+        printf("%d", -1);
+        return;
+    }
+    long long c = (a + b)/2;
+    long long x = sum(c);
+    if (x == n) {
+        printf("%lli", c);
+        return;
+    }
+    else if (x > n) {
+        bin_search(a, c-1, n);
+    }
+    else {
+        bin_search(c+1, b, n);
+    }
+}
+
 int main() {
 
-    long long s;
-    scanf("%lli", &s);
+    long long n;
+    scanf("%lli", &n);
 
-    int dn = 0;
-    long long st = s;
-    while (st > 0) {
-        st /= 10;
-        dn++;
-    }
+    bin_search(0, n, n);
 
-    long long a = (9*(s+dn))/10+5;
-    long long b = (9*s)/10-1;
-    for (long long i = a; i >= b; i--) {
-        if (sum(i) == s) {
-            printf("%lli", i);
-            return 0;
-        }
-    }
-
-    printf("%d", -1);
     return 0;
+
 }
